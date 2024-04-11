@@ -24,6 +24,12 @@ const FriendsList = () => {
       <Link as={RouterLink} to="/friend3">
         Friend 3
       </Link>
+
+      {/* {friends.map((friend, index) => (
+        <Link key={index} as={RouterLink} to={`/friend/${friend.id}`}>
+          {friend.name}
+        </Link>
+      ))} */} 
     </VStack>
   );
 };

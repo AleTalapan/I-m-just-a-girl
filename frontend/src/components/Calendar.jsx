@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { format, getDaysInMonth } from 'date-fns';
 import { Link } from 'react-router-dom';
 
