@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Link, HStack, VStack } from '@chakra-ui/react';
+import { Box, Link, HStack } from '@chakra-ui/react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import FriendsList from './FriendsList';
 
