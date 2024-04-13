@@ -1,6 +1,7 @@
+import Journal from "./Journal"
 
 const HomePage = () => {
-  return 
+  return <Journal></Journal>
    
   
 }
