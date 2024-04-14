@@ -18,10 +18,12 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import { useSetRecoilState } from 'recoil';
+import authScreenAtom from '../atoms/authAtom';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false)
-
+  const setAuthScreen=useSetRecoilState(authScreenAtom);
   return (
     <Flex
       minH={'100vh'}
@@ -40,20 +42,18 @@ export default function SignupCard() {
           boxShadow={'lg'}
           p={8}>
           <Stack spacing={4}>
-            <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <Input type="text" />
                 </FormControl>
               </Box>
               <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
+                <FormControl id="lastName" isRequired>
+                  <FormLabel>Username</FormLabel>
                   <Input type="text" />
                 </FormControl>
               </Box>
-            </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input type="email" />
@@ -85,7 +85,9 @@ export default function SignupCard() {
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already a user? <Link color={'#6f00ff'}>Login</Link>
+                Already a user? <Link color={'#6f00ff'}
+                  onClick={() => setAuthScreen("login")}
+                >Login</Link>
               </Text>
             </Stack>
           </Stack>
