@@ -33,10 +33,10 @@ const userSchema = mongoose.Schema(
 			type: String,
 			default: "",
 		},
-		// isAdmin: {
-		// 	type: Boolean,
-		// 	default: false,
-		// },
+		 isAdmin: {
+			type: Boolean,
+		 	default: false,
+		 },
 		
 	},
 	{

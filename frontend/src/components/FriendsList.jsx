@@ -1,7 +1,32 @@
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { VStack, Link } from '@chakra-ui/react';
+import { VStack, Link,Text } from '@chakra-ui/react';
 
 const FriendsList = () => {
+  const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch('/api/friends'); 
+        const data = await response.json();
+
+        setFriends(data);
+
+      } catch (error) {
+        console.error("Failed to fetch friends:", error);
+      } finally {
+        setLoading(false); //nu afisam nimic pana nu-s datele incarcate toate
+      }
+    };
+    fetchFriends();
+  }, []); 
+
+  if (loading) {
+    return null; 
+  }
+
   return (
     <VStack
       pos="absolute"
@@ -14,22 +39,17 @@ const FriendsList = () => {
       borderRadius="md"
       p={2}
       bg="purple.200"
+      overflowY="auto"
     >
-      <Link as={RouterLink} to="/friend1">
-        Friend 1
-      </Link>
-      <Link as={RouterLink} to="/friend2">
-        Friend 2
-      </Link>
-      <Link as={RouterLink} to="/friend3">
-        Friend 3
-      </Link>
-
-      {/* {friends.map((friend, index) => (
-        <Link key={index} as={RouterLink} to={`/friend/${friend.id}`}>
-          {friend.name}
-        </Link>
-      ))} */} 
+      {friends.length === 0 ? (
+        <Text>You have no friends in your list. Add some.</Text>
+      ) : (
+        friends.map((friend) => (
+          <Link key={friend.username} as={RouterLink} to={`/${friend.username}`}>
+            {friend.name}
+          </Link>
+        ))
+      )}
     </VStack>
   );
 };
