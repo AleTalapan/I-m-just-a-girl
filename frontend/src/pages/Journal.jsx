@@ -1,7 +1,7 @@
 import  { useState,useEffect } from 'react';
 import { Box, Text, Button, HStack, Textarea, useToast } from "@chakra-ui/react";
 
-const Journal = ({ currentUser, username, month, day}) => {
+const Journal = ({ currentUser,username, month, day}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 1360;
   const longText = "Text";
@@ -28,7 +28,7 @@ const Journal = ({ currentUser, username, month, day}) => {
       }
     };
     fetchJournalEntry();//apelez functia ca altfel nu se apeleaza niciodata
-  }, [username, month, day]);
+  }, [ username,month, day]);
 
 
   const handleSave = async () => {
