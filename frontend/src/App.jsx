@@ -4,12 +4,21 @@ import { Button } from "@chakra-ui/button";
 import { Container } from "@chakra-ui/react";
 import {Route, Routes } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
+import {Route,Routes} from 'react-router-dom'
+import HomePage from './pages/HomePage';
+import {Box} from "@chakra-ui/layout";
+
+
+
 function App() {
   return (
     <Container maxW='620px'>
-      <Header />
+      <Box mb={50}><Header/></Box>
       <Routes>
+      	<Route path="/:username" element={<ProfilePage />} />
         <Route path='/auth' element={<AuthPage />} />
+	<Route path="/" element={< HomePage/>} />
       </Routes>
     </Container>
   );
