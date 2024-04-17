@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import { Avatar } from "@chakra-ui/avatar";
+
 import Calendar from "../components/Calendar";
 import UserHeader from "../components/UserHeader"
 

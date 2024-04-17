@@ -7,7 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import {Route,Routes} from 'react-router-dom'
 import HomePage from './pages/HomePage';
 import {Box} from "@chakra-ui/layout";
-
+import Journal from './pages/Journal';
 
 
 function App() {
@@ -18,6 +18,8 @@ function App() {
       	<Route path="/:username" element={<ProfilePage />} />
         <Route path='/auth' element={<AuthPage />} />
 	<Route path="/" element={< HomePage/>} />
+    <Route path="/:userId/journal/:month/:day" element={<Journal/>} />
+
       </Routes>
     </Container>
   );

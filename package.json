@@ -4,6 +4,8 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "date-fns": "^3.6.0",
-    "framer-motion": "^11.0.25"
+    "framer-motion": "^11.0.25",
+    "google-fonts": "^1.0.0",
+    "react-icons": "^5.0.1"
   }
 }
