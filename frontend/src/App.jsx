@@ -2,7 +2,6 @@ import './App.css'
 import Header from './components/Header';
 import { Button } from "@chakra-ui/button";
 import { Container } from "@chakra-ui/react";
-import {Route, Routes } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import {Route,Routes} from 'react-router-dom'
