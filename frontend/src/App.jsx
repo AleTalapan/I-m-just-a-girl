@@ -15,7 +15,7 @@ function App() {
     <Routes>
     <Route path="/:username" element={<ProfilePage />} />
     <Route path="/" element={< HomePage/>} />
-    <Route path="/:userId/journal/:month/:day" element={<Journal/>} />
+    <Route path="/:username/journal/:month/:day" element={<Journal/>} />
 
 
     </Routes>

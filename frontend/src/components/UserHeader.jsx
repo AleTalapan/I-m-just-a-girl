@@ -75,6 +75,7 @@ const UserHeader = ({currentUser = null, user = null}) => {
         <RiAdminFill color="purple" />
       )} */} 
       {/* daca e admin ii va aparea coroana langa nume */}
+      <RiAdminFill color="purple" />
         </HStack>
       
      
