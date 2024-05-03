@@ -1,4 +1,4 @@
-import User from "../models/userModel";
+import User from "../models/userModel.js";
 import bcrypt from "bcryptjs"
 import mongoose, { mongo } from "mongoose";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
@@ -7,7 +7,7 @@ import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCooki
 const signupUser = async (req, res) => {
 	try {
 		const { name, email, username, password } = req.body;
-		const isAdmin = req.body.isAdmin;  
+		//const isAdmin = req.body.isAdmin;  
 
 		const user = await User.findOne({ $or: [{ email }, { username }] });
 		if (user) {
@@ -21,7 +21,7 @@ const signupUser = async (req, res) => {
 			email,
 			username,
 			password: hashedPassword,
-			isAdmin: isAdmin
+			//isAdmin: isAdmin
 		});
 		await newUser.save();
 
@@ -33,7 +33,7 @@ const signupUser = async (req, res) => {
 				name: newUser.name,
 				email: newUser.email,
 				username:newUser.username,
-				isAdmin:newUser.isAdmin,
+				//isAdmin:newUser.isAdmin,
 			});
 		} else {
 			res.status(400).json({ error: "Invalid user data" });
@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
 
 		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
 
-		const isAdmin = user.isAdmin;
+		//const isAdmin = user.isAdmin;
 
 		generateTokenAndSetCookie(user._id, res);
 
@@ -61,9 +61,9 @@ const loginUser = async (req, res) => {
 			name: user.name,
 			email: user.email,
 			username: user.username,
-			isAdmin:isAdmin,
-			bio: user.bio,
-			profilePic: user.profilePic,
+			//isAdmin:isAdmin,
+			//bio: user.bio,
+			//profilePic: user.profilePic,
 		});
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -71,4 +71,16 @@ const loginUser = async (req, res) => {
 	}
 };
 
-export {signupUser,loginUser};
+const logoutUser = (req, res) => {
+	try {
+		res.cookie("jwt", "", { maxAge: 1 });
+		res.status(200).json({ message: "User logged out successfully" });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+		console.log("Error in signupUser: ", err.message);
+	}
+};
+
+
+
+export {logoutUser,signupUser,loginUser};
