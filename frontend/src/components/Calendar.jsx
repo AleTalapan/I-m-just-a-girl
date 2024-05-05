@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { format, getDaysInMonth } from 'date-fns';
 import { Link } from 'react-router-dom';
 
-const Calendar = ({ username }) => {
+const Calendar = ({ user }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleMonthChange = (event) => {
@@ -30,7 +30,7 @@ const Calendar = ({ username }) => {
         {days.map(day => (
           <div key={day}
             style={{ border: '3px solid black', backgroundColor: '#b26ed4', width: '100px', height: '70px', margin: '5px', textAlign: 'center', cursor: 'pointer' }}>
-            <Link to={`/${username}/journal/${selectedDate.getMonth() + 1}/${day}`}>
+            <Link to={`/${user._username}/journal/${selectedDate.getMonth() + 1}/${day}`}>
               <p>{day}</p>
             </Link>
           </div>

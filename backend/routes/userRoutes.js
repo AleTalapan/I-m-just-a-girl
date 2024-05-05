@@ -1,9 +1,10 @@
 import express from "express";
-import {deleteUser,logoutUser, loginUser, signupUser, addFriend, acceptFriendRequest, removeFriend, updateUser } from "../controllers/userController.js";
+import {getUserProfile,deleteUser,logoutUser, loginUser, signupUser, addFriend, acceptFriendRequest, removeFriend, updateUser } from "../controllers/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 import protectRouteAdmin from "../middlewares/protectRouteAdmin";
 const router = express.Router();
 
+router.get("/profile/:username",getUserProfile);
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout",protectRoute, logoutUser);

@@ -1,10 +1,14 @@
 import  { useState,useEffect } from 'react';
 import { Box, Text, Button, HStack, Textarea, useToast } from "@chakra-ui/react";
+import { useRecoilValue } from 'recoil';
+import userAtom from '../atoms/userAtom';
 
-const Journal = ({ currentUser,username, month, day}) => {
+const Journal = ({ username, month, day}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 1360;
   const longText = "Text";
+
+  const currentUser = useRecoilValue(userAtom); 
 
   const [privacy, setPrivacy] = useState("red");
 

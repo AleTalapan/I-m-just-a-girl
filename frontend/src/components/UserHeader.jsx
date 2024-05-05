@@ -1,57 +1,62 @@
 import { Link } from "react-router-dom";
 import { Box, Flex, Text, Button,HStack } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
-// import { useEffect, useState } from "react";
 import { RiAdminFill } from "react-icons/ri";
+import { useRecoilValue } from "recoil";
+import { useState } from "react";
+import userAtom from "../atoms/userAtom";
 
-const UserHeader = ({currentUser = null, user = null}) => {
+const UserHeader = ({user}) => {
   const noteText = "A part of today's journal note..";
-  // const [loading, setLoading] = useState(true);
-  // const [message, setMessage] = useState('');
-  //   //const currentUser = useRecoilValue(userAtom); mai trb implementata..
-  // const [isFriend, setFriendState] = useState(
-  //   user.friends.includes(currentUser?._id)
-  // );
-  // const [updating, setUpdating] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
 
-  // const handleFriendUnfriend = async () => {
-  //   if (!currentUser) {
-  //     setMessage("Please login");
-  //     return;
-  //   }
+  const currentUser = useRecoilValue(userAtom); 
 
-  //   if (updating) return;
-  //   setUpdating(true);
-  //   try {
-  //     const res = await fetch(`/api/users/friends/${user.username}`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
 
-  //     const data = await res.json();
+  const [isFriend, setFriendState] = useState(
+    user.friends.includes(currentUser?._id)
+  );
+  const [updating, setUpdating] = useState(false);
 
-  //     if (data.error) {
-  //       setMessage(`Error: ${data.error}`);
-  //       return;
-  //     }
+  const handleFriendUnfriend = async () => {
+    if (!currentUser) {
+      setMessage("Please login");
+      return;
+    }
 
-  //     if (isFriend) {
-  //       setMessage(`Removed ${user.name} from friendslist`);
-  //       user.friends.pop();
-  //     } else {
-  //       setMessage(`Added ${user.name} to friendlist`);
-  //       user.friends.push(currentUser?._id);
-  //     }
+    if (updating) return;
+    setUpdating(true);
+    try {
+      const res = await fetch(`/api/users/friends/${user.username}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  //     setFriendState(!isFriend);
-  //   } catch (error) {
-  //     setMessage(`Error: ${error.message}`);
-  //   } finally {
-  //     setUpdating(false);
-  //   }
-  // };
+      const data = await res.json();
+
+      if (data.error) {
+        setMessage(`Error: ${data.error}`);
+        return;
+      }
+
+      if (isFriend) {
+        setMessage(`Removed ${user.name} from friendslist`);
+        user.friends.pop();
+      } else {
+        setMessage(`Added ${user.name} to friendlist`);
+        user.friends.push(currentUser?._id);
+      }
+
+      setFriendState(!isFriend);
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>

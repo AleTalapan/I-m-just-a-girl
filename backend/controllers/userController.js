@@ -3,12 +3,35 @@ import FriendRequest from "../models/friendRequestModel.js";
 import bcrypt from "bcryptjs"
 import mongoose, { mongo } from "mongoose";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
+import {v2 as cloudinary} from "cloudinary"
+
+const getUserProfile = async (req, res) => {
+	
+	const { username } = req.params;
+
+		try{
+			let user;
+
+			if (mongoose.Types.ObjectId.isValid(username)) {
+				user = await User.findOne({ _id: username }).select("-password").select("-updatedAt");
+			} else {
+				user = await User.findOne({ username: username }).select("-password").select("-updatedAt");
+			}
+
+			if (!user) return res.status(404).json({ error: "User not found" });
+			
+			res.status(200).json(user);
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+		console.log("Error in getUserProfile: ", err.message);
+	}
+}
 
 
 const signupUser = async (req, res) => {
 	try {
 		const { name, email, username, password } = req.body;
-		//const isAdmin = req.body.isAdmin;  
+		const isAdmin = req.body.isAdmin;  
 
 		const user = await User.findOne({ $or: [{ email }, { username }] });
 		if (user) {
@@ -22,7 +45,7 @@ const signupUser = async (req, res) => {
 			email,
 			username,
 			password: hashedPassword,
-			//isAdmin: isAdmin
+			isAdmin: isAdmin
 		});
 		await newUser.save();
 
@@ -34,7 +57,7 @@ const signupUser = async (req, res) => {
 				name: newUser.name,
 				email: newUser.email,
 				username:newUser.username,
-				//isAdmin:newUser.isAdmin,
+				isAdmin:newUser.isAdmin,
 			});
 		} else {
 			res.status(400).json({ error: "Invalid user data" });
@@ -53,7 +76,7 @@ const loginUser = async (req, res) => {
 
 		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
 
-		//const isAdmin = user.isAdmin;
+		const isAdmin = user.isAdmin;
 
 		generateTokenAndSetCookie(user._id, res);
 
@@ -62,9 +85,9 @@ const loginUser = async (req, res) => {
 			name: user.name,
 			email: user.email,
 			username: user.username,
-			//isAdmin:isAdmin,
-			//bio: user.bio,
-			//profilePic: user.profilePic,
+			isAdmin:isAdmin,
+			bio: user.bio,
+			profilePic: user.profilePic,
 		});
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -238,4 +261,4 @@ const getFeedPosts = async (req, res) => {
 };
 
 
-export {deleteUser,getFeedPosts, updateUser, signupUser, loginUser, logoutUser, addFriend, acceptFriendRequest, removeFriend };
+export {getUserProfile,deleteUser,getFeedPosts, updateUser, signupUser, loginUser, logoutUser, addFriend, acceptFriendRequest, removeFriend };

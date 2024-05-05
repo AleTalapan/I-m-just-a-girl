@@ -7,9 +7,14 @@ import {Route,Routes} from 'react-router-dom'
 import HomePage from './pages/HomePage';
 import {Box} from "@chakra-ui/layout";
 import Journal from './pages/Journal';
+import { useRecoilValue } from 'recoil';
+import userAtom from './atoms/userAtom';
 
 
 function App() {
+  const user=useRecoilValue(userAtom);
+  console.log(user)
+  
   return (
     <Container maxW='620px'>
     <Box mb={50}><Header/></Box>
