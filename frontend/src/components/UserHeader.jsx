@@ -7,56 +7,11 @@ import { useState } from "react";
 import userAtom from "../atoms/userAtom";
 
 const UserHeader = ({user}) => {
-  const noteText = "A part of today's journal note..";
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
+  const noteText = "A part of today's journal note..";//trb s o iau din jurnal
+  
 
   const currentUser = useRecoilValue(userAtom); 
 
-
-  const [isFriend, setFriendState] = useState(
-    user.friends.includes(currentUser?._id)
-  );
-  const [updating, setUpdating] = useState(false);
-
-  const handleFriendUnfriend = async () => {
-    if (!currentUser) {
-      setMessage("Please login");
-      return;
-    }
-
-    if (updating) return;
-    setUpdating(true);
-    try {
-      const res = await fetch(`/api/users/friends/${user.username}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-
-      if (data.error) {
-        setMessage(`Error: ${data.error}`);
-        return;
-      }
-
-      if (isFriend) {
-        setMessage(`Removed ${user.name} from friendslist`);
-        user.friends.pop();
-      } else {
-        setMessage(`Added ${user.name} to friendlist`);
-        user.friends.push(currentUser?._id);
-      }
-
-      setFriendState(!isFriend);
-    } catch (error) {
-      setMessage(`Error: ${error.message}`);
-    } finally {
-      setUpdating(false);
-    }
-  };
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>

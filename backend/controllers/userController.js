@@ -1,5 +1,4 @@
 import User from "../models/userModel.js";
-import FriendRequest from "../models/friendRequestModel.js";
 import bcrypt from "bcryptjs"
 import mongoose, { mongo } from "mongoose";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
@@ -26,6 +25,37 @@ const getUserProfile = async (req, res) => {
 		console.log("Error in getUserProfile: ", err.message);
 	}
 }
+
+const followUnFollowUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const userToModify = await User.findById(id);
+		const currentUser = await User.findById(req.user._id);
+
+		if (id === req.user._id.toString())
+			return res.status(400).json({ error: "You cannot follow/unfollow yourself" });
+
+		if (!userToModify || !currentUser)
+		 return res.status(400).json({ error: "User not found" });
+
+		const isFollowing = currentUser.following.includes(id);
+
+		if (isFollowing) {
+			//follow
+			await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+			await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
+			res.status(200).json({ message: "User unfollowed successfully" });
+		} else {
+			//unfollow
+			await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+			await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
+			res.status(200).json({ message: "User followed successfully" });
+		}
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+		console.log("Error in followUnFollowUser: ", err.message);
+	}
+};
 
 
 const signupUser = async (req, res) => {
@@ -136,79 +166,8 @@ const deleteUser = async (req, res) => {
   };
 
 
-const addFriend = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const userToFriend = await User.findById(id);
-        const currentUser = await User.findById(req.user._id);
-
-        if (id === req.user._id.toString())
-            return res.status(400).json({ error: "You cannot add yourself as a friend" });
-
-        if (!userToFriend || !currentUser)
-            return res.status(400).json({ error: "User not found" });
-
-        const existingRequest = await FriendRequest.findOne({ from: req.user._id, to: id });
-        if (existingRequest)
-            return res.status(400).json({ error: "Friend request already sent" });
-
-        const newRequest = new FriendRequest({ from: req.user._id, to: id });
-        await newRequest.save();
-        res.status(200).json({ message: "Friend request sent successfully" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-        console.log("Error adding friend", err.message);
-    }
-};
-
-const acceptFriendRequest = async (req, res) => {
-    try {
-        const { requestId } = req.params;
-        const request = await FriendRequest.findById(requestId);
-
-        if (!request)
-            return res.status(400).json({ error: "Friend request not found" });
-
-        if (request.to.toString() !== req.user._id.toString())
-            return res.status(403).json({ error: "You are not authorized to accept this friend request" });
-
-        await User.findByIdAndUpdate(request.to, { $push: { friends: request.from } });
-        await User.findByIdAndUpdate(request.from, { $push: { friends: request.to } });
-
-        await FriendRequest.findByIdAndDelete(requestId);
-
-        res.status(200).json({ message: "Friend request accepted successfully" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-        console.log("Error accepting friend request ", err.message);
-    }
-};
 
 
-const removeFriend = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const userToRemove = await User.findById(id);
-        const currentUser = await User.findById(req.user._id);
-
-        if (!userToRemove || !currentUser)
-            return res.status(400).json({ error: "User not found" });
-
-        if (!currentUser.friends.includes(id))
-            return res.status(400).json({ error: "User is not your friend" });
-
-        currentUser.friends.pull(id);
-        await currentUser.save();
-
-        userToRemove.friends.pull(req.user._id);
-        await userToRemove.save();
-
-        res.status(200).json({ message: "Friend removed successfully" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-        console.log("Error in removeFriend: ", err.message);
-    }
-};
 
 const updateUser = async (req, res) => {
 	const { name, email, username, password,bio } = req.body;
@@ -261,4 +220,4 @@ const getFeedPosts = async (req, res) => {
 };
 
 
-export {getUserProfile,deleteUser,getFeedPosts, updateUser, signupUser, loginUser, logoutUser, addFriend, acceptFriendRequest, removeFriend };
+export {getUserProfile,deleteUser,getFeedPosts, updateUser, signupUser, loginUser, logoutUser, followUnFollowUser };
