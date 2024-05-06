@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Link, HStack } from '@chakra-ui/react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import FriendsList from './FriendsList';
+import LogoutButton from './LogoutButton';
 
 const Header = () => {
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
@@ -64,9 +65,7 @@ const Header = () => {
         border="1px"
         borderRadius="md" p={2} bg="purple.200"
       >
-        <Link as={RouterLink} to="/logout" className='log-out'>
-          Log Out
-        </Link>
+        <LogoutButton/>
       </Box>
     </HStack>
   );

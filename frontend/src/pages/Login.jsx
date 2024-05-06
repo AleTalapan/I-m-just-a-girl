@@ -20,10 +20,12 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useSetRecoilState } from 'recoil'
 import authScreenAtom from '../atoms/authAtom'
 import useShowToast from '../hooks/useShowToast'
+import userLoggedin from '../atoms/userLoggedin'
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false)
   const setAuthScreen=useSetRecoilState(authScreenAtom);
+  const setUser = useSetRecoilState(userLoggedin);
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -44,8 +46,11 @@ export default function LoginCard() {
         showToast("Error", data.error, "error");
         return;
       }
+      localStorage.setItem("user-threads", JSON.stringify(data));
+      setUser(data);
 
 
+      console.log("Login successful", data)
     } catch (error) {
       showToast("Error", error, "error");
     }
