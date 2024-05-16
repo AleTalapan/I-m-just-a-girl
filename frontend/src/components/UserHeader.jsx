@@ -7,10 +7,8 @@ import userLoggedin from "../atoms/userLoggedin";
 
 const UserHeader = ({user}) => {
   const noteText = "A part of today's journal note..";//trb s o iau din jurnal
-  
-
   const currentUser = useRecoilValue(userLoggedin); 
-console.log(user);
+  console.log(user);
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>
@@ -27,7 +25,7 @@ console.log(user);
       <Box>
         <HStack>
         <Text fontSize={"2xl"} fontWeight={"bold"}>
-        John Doe
+        {user.name}
         </Text>
 
         {/* {user.isAdmin && (
@@ -38,8 +36,8 @@ console.log(user);
         </HStack>
       
      
-        <Text fontSize={"sm"}>johndoe</Text>
-        <Text fontSize={"sm"}>biography</Text>
+        <Text fontSize={"sm"}>{user.username}</Text>
+        <Text fontSize={"sm"}>{user.bio}</Text>
 
     {/* daca esti user-ul curent trb sa-ti apara edit profile si daca e alt user friend/unfriend */}
 

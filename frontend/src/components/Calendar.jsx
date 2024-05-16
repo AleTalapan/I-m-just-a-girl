@@ -30,7 +30,7 @@ const Calendar = ({ user }) => {
         {days.map(day => (
           <div key={day}
             style={{ border: '3px solid black', backgroundColor: '#b26ed4', width: '100px', height: '70px', margin: '5px', textAlign: 'center', cursor: 'pointer' }}>
-            <Link to={`/journal/${user._username}/${selectedDate.getMonth() + 1}/${day}`}>
+            <Link to={`/journal/${user.username}/${selectedDate.getMonth() + 1}/${day}`}>
               <p>{day}</p>
             </Link>
           </div>

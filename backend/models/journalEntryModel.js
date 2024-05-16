@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const journalEntrySchema = mongoose.Schema(
     {
-        username: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-			required: true,
+        createdBy: {
+                type: String,
+                required: true,
+                index: true,
 		},
         month: {
             type: Number,

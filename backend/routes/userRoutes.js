@@ -12,4 +12,5 @@ router.put("/update/:id",protectRoute,updateUser);
 router.delete("/delete/:id",protectRouteAdmin,deleteUser)
 router.post("/follow/:id",protectRoute, followUnFollowUser) 
 
+
 export default router;
