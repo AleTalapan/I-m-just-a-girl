@@ -3,10 +3,15 @@ import { Box, Link, HStack } from '@chakra-ui/react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import FriendsList from './FriendsList';
 import LogoutButton from './LogoutButton';
+import userLoggedin from '../atoms/userLoggedin';
+import { useRecoilValue } from 'recoil';
 
 const Header = () => {
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
   const location = useLocation();
+  const currentUser = useRecoilValue(userLoggedin);
+
+
 
   useEffect(() => {
     setIsFriendsListOpen(false); // Închide lista de prieteni când ruta paginii se schimbă
@@ -47,7 +52,7 @@ const Header = () => {
         border="1px"
         borderRadius="md" p={2} bg="purple.200"
       >
-        <Link as={RouterLink} to="/profile">
+        <Link as={RouterLink} to={`/${currentUser.username}`}>
           My Profile
         </Link>
       </Box>

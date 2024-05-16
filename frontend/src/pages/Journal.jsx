@@ -1,21 +1,20 @@
 import  { useState,useEffect } from 'react';
 import { Box, Text, Button, HStack, Textarea, useToast } from "@chakra-ui/react";
 import { useRecoilValue } from 'recoil';
-import userAtom from '../atoms/userAtom';
+import { useParams } from 'react-router-dom';
+import userLoggedin from '../atoms/userLoggedin';
 
-const Journal = ({ username, month, day}) => {
+const Journal = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 1360;
   const longText = "Text";
 
-  const currentUser = useRecoilValue(userAtom); 
+  const {username,month,day}=useParams();
+  const currentUser = useRecoilValue(userLoggedin); 
 
   const [privacy, setPrivacy] = useState("red");
-
   const [editableText, setEditableText] = useState("");
-
   const toast = useToast();
-
   const [journalEntry, setJournalEntry] = useState("");
 
 //pt intrarea din jurnal din ziua respectiva
@@ -102,7 +101,7 @@ const Journal = ({ username, month, day}) => {
         borderRadius={"10px"}
         fontFamily='cursive'
       >
-        {currentUser && currentUser._id === user._id ? (
+        {currentUser && currentUser._username=== username? (
           <>
             <Textarea
               value={editableText}
@@ -149,7 +148,7 @@ const Journal = ({ username, month, day}) => {
         )}
       </HStack>
       
-      {currentUser && currentUser._id === user._id && (
+      {currentUser && currentUser._username === username && (
         <HStack spacing="10px" justifyContent="center" mt="20px">
           <Button 
               borderRadius="50px" 

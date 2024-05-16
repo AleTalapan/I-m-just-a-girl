@@ -7,8 +7,8 @@ import useGetUserProfile from "../hooks/useGetUserProfile";
 
 
 const ProfilePage = () => {
-  const { user } = useGetUserProfile();
-//  const {username}=useParams();
+  const { user } = useGetUserProfile();//user-ul din link
+  console.log(user);
 
 if (!user) return;
   <h1>User not found</h1>;

@@ -1,0 +1,6 @@
+PORT = 5000
+MONGO_URI=mongodb+srv://stefale:ic123@icproject.le22ulh.mongodb.net/journal?retryWrites=true&w=majority&appName=ICproject
+JWT_SECRET=jwtSecret
+CLOUDINARY_CLOUD_NAME=dfdvjr87z
+CLOUDINARY_API_KEY=3367532635596274
+CLOUDINARY_API_SECRET=35bjMD3opmr_KudeEVdcyQNfphU

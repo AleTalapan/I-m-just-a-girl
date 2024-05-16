@@ -3,15 +3,14 @@ import { Box, Flex, Text, Button,HStack } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { RiAdminFill } from "react-icons/ri";
 import { useRecoilValue } from "recoil";
-import { useState } from "react";
-import userAtom from "../atoms/userAtom";
+import userLoggedin from "../atoms/userLoggedin";
 
 const UserHeader = ({user}) => {
   const noteText = "A part of today's journal note..";//trb s o iau din jurnal
   
 
-  const currentUser = useRecoilValue(userAtom); 
-
+  const currentUser = useRecoilValue(userLoggedin); 
+console.log(user);
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>

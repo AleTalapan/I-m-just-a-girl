@@ -1,7 +1,6 @@
 import { Link } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import useShowToast from "../hooks/useShowToast";
-import { FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import userLoggedin from "../atoms/userLoggedin";
 
@@ -25,7 +24,7 @@ const LogoutButton = () => {
         return;
       }
 
-      localStorage.removeItem("user-threads");
+      localStorage.removeItem("journal");
       setUser(null);
       navigate("/auth");
     } catch (error) {

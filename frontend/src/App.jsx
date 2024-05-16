@@ -8,7 +8,6 @@ import HomePage from './pages/HomePage';
 import {Box} from "@chakra-ui/layout";
 import Journal from './pages/Journal';
 import { useRecoilValue } from 'recoil';
-import userAtom from './atoms/userAtom';
 import userLoggedin from './atoms/userLoggedin';
 
 
