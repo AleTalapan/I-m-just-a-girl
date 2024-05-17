@@ -10,9 +10,7 @@ const Header = () => {
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
   const location = useLocation();
   const currentUser = useRecoilValue(userLoggedin);
-
-
-
+  console.log("Current User:", currentUser);
   useEffect(() => {
     setIsFriendsListOpen(false); // Închide lista de prieteni când ruta paginii se schimbă
   }, [location]);
@@ -22,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <HStack justifyContent="space-between">
+    <HStack mb={"30px"} justifyContent="space-between">
       <Box
         hover={{ backgroundColor: '#b26ed4', color: "white" }}
         border="1px"
@@ -52,7 +50,7 @@ const Header = () => {
         border="1px"
         borderRadius="md" p={2} bg="purple.200"
       >
-        <Link as={RouterLink} to={`/${currentUser.username}`}>
+        <Link as={RouterLink} to={`/${currentUser?.username}`}>
           My Profile
         </Link>
       </Box>
@@ -61,7 +59,7 @@ const Header = () => {
         border="1px"
         borderRadius="md" p={2} bg="purple.200"
       >
-        <Link as={RouterLink} to="/journal">
+        <Link as={RouterLink} to="/journal/">
           Journal
         </Link>
       </Box>

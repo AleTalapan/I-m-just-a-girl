@@ -5,22 +5,23 @@ import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import {Navigate,Route,Routes} from 'react-router-dom'
 import HomePage from './pages/HomePage';
-import {Box} from "@chakra-ui/layout";
 import { useRecoilValue } from 'recoil';
 import userLoggedin from './atoms/userLoggedin';
+import Journal from './components/Journal';
 
 
 function App() {
-  const user=useRecoilValue(userLoggedin);
-  console.log(user)
+  const currentUser=useRecoilValue(userLoggedin);
+  console.log(currentUser)
   
   return (
     <Container maxW='620px'>
-    <Box mb={50}><Header/></Box>
+    {currentUser && <Header />}
     <Routes>
-    <Route path="/:username" element={<ProfilePage />} />
-    <Route path='/auth' element={!user ? <AuthPage /> : <Navigate to="/" />} />
-	  <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
+    <Route path="/" element={currentUser ? <HomePage /> : <Navigate to="/auth" />}/>
+    <Route path="/auth" element={!currentUser ? <AuthPage /> : <Navigate to="/" />}/>
+     <Route path="/:username" element={<ProfilePage />} />
+    <Route path="/:username/:month/:day" element={<Journal />} /> 
   
 
       </Routes>
