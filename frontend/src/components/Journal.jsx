@@ -10,6 +10,7 @@ const Journal = () => {
   const longText = "Text";
 
   const {username,month,day}=useParams();
+  const [buttonText, setButtonText] = useState("Save");
 
   const currentUser = useRecoilValue(userLoggedin); 
 
@@ -18,9 +19,9 @@ const Journal = () => {
   const toast = useToast();
   const [journalEntry, setJournalEntry] = useState("");
 
-  console.log(currentUser);
-  console.log(username);
-//pt intrarea din jurnal din ziua respectiva
+//   console.log(currentUser);
+//   console.log(username);
+//pt intrarea din jurnal din ziua respectiva - merge 
 useEffect(() => {
     const fetchJournalEntry = async () => {
       try {
@@ -39,38 +40,38 @@ useEffect(() => {
     fetchJournalEntry();
   }, [ username,month, day]);
 
+  console.log(editableText);
 
-//   const handleSave = async () => {
-//     try {
-//       const response = await fetch(`api/journal/${username}/${month}/${day}`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ entry: editableText })
-//       });
-//       if (response.ok) {
-//         toast({
-//           title: "Saved",
-//           description: "Changes have been saved.",
-//           status: "success",
-//           duration: 2000,
-//           isClosable: true,
-//         });
-//       } else {
-//         throw new Error('Failed to save');
-//       }
-//     } catch (error) {
-//       console.error("Failed to save changes:", error);
-//       toast({
-//         title: "Error",
-//         description: "Failed to save changes.",
-//         status: "error",
-//         duration: 2000,
-//         isClosable: true,
-//       });
-//     }
-//   };
+  const handleSaveEntry = async () => {
+    try {
+        setButtonText("Saving...");
+        const res = await fetch(`/api/journal/create/${month}/${day}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          createdBy: username,
+          entry: editableText,
+        }),
+      });
+  console.log(editableText);
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      const data = await res.json(); 
+      setJournalEntry(data.entry);
+      setEditableText(editableText);
+      console.log("Journal entry saved successfully:", data);
+      setButtonText("Saved");
+      setTimeout(() => setButtonText("Save"), 2000); 
+    } catch (error) {
+      console.error("Failed to save changes:", error.message);
+      setButtonText("Save");
+    }
+  };
+
+
 
   const getCurrentPageText = () => {
     const startIndex = currentPage * pageSize;
@@ -118,11 +119,11 @@ useEffect(() => {
         marginTop={"35px"}
         height="90%"
       />
-      <Button mt="2px">Save</Button>
+      <Button onClick={handleSaveEntry} mt="2px">{buttonText}</Button>
     </>
         ) : (
     <Text textAlign={"left"} marginTop={"50px"}>
-      {getCurrentPageText()}
+       {journalEntry || "No journal entry available"}
     </Text>
     )
     }

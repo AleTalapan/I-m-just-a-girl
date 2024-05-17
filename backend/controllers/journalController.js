@@ -45,11 +45,6 @@ const getJournalEntry = async (req, res) => {
     try {
         const { createdBy, month, day } = req.params;
 
-        // const user = await User.findOne({ username: createdBy });
-        // if (!user) {
-        //     return res.status(404).json({ error: "User not found" });
-        // }
-
         const journalEntry = await JournalEntry.findOne({
             createdBy: createdBy,  
             month: month,
