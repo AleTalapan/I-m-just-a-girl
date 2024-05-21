@@ -1,14 +1,73 @@
-import { Link } from "react-router-dom";
-import { Box, Flex, Text, Button,HStack } from "@chakra-ui/react";
+
+import { Box, Link, Flex, Text,HStack,VStack } from "@chakra-ui/layout";
 import { Avatar } from "@chakra-ui/avatar";
-import { RiAdminFill } from "react-icons/ri";
+import { useToast, Button } from "@chakra-ui/react";
+import User from "../../../backend/models/userModel";
 import { useRecoilValue } from "recoil";
+import { Link as RouterLink } from "react-router-dom";
+import { useState } from "react";
+import useShowToast from "../hooks/useShowToast";
+import { RiAdminFill } from "react-icons/ri";
 import userLoggedin from "../atoms/userLoggedin";
 
 const UserHeader = ({user}) => {
+
+  const toast = useToast();
   const noteText = "A part of today's journal note..";//trb s o iau din jurnal
+
   const currentUser = useRecoilValue(userLoggedin); 
   console.log(user);
+
+  const [following, setFollowing] = useState(
+    user.followers.includes(currentUser?._id)
+  );
+
+  console.log(user.followers);
+  const [updating, setUpdating] = useState(false);
+  const showToast = useShowToast();
+
+
+
+
+  const handleFollowUnfollow = async () => {
+    if (!currentUser) {
+      showToast("Error", "Pls login to follow", "error");
+      return;
+    }
+
+    if (updating) return;
+    setUpdating(true);
+    try {
+      const res = await fetch(`/api/users/follow/${user._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      if (following) {
+        showToast("Success", `Unfollowed ${user.name}`, "success");
+        user.followers.pop();
+      } else {
+        showToast("Success", `Followed ${user.name}`, "success");
+        user.followers.push(currentUser?._id);
+      }
+
+      setFollowing(!following);
+    } catch (error) {
+      showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
+    }
+  };
+
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>
@@ -28,42 +87,40 @@ const UserHeader = ({user}) => {
         {user.name}
         </Text>
 
-        {/* {user.isAdmin && (
+         {user.isAdmin && (
         <RiAdminFill color="purple" />
-      )} */} 
-      {/* daca e admin ii va aparea coroana langa nume */}
-      <RiAdminFill color="purple" />
+      )} 
         </HStack>
-      
-     
+
+      <VStack alignItems={"center"}>
         <Text fontSize={"sm"}>{user.username}</Text>
-        <Text fontSize={"sm"}>{user.bio}</Text>
+        </VStack>
 
-    {/* daca esti user-ul curent trb sa-ti apara edit profile si daca e alt user friend/unfriend */}
-
-    {/* {currentUser && user &&  currentUser._id === user._id ?
-    <Link to="/edit-profile">
-      <Button mt={5} borderColor="black" bg="purple.200">Edit Profile</Button>
-    </Link>
-          :
-    <Button mt={5} borderColor="black" bg="purple.200" onClick={handleFriendUnfriend} isLoading={updating}>
-      {isFriend ? "Unfriend" : "Friend"}
-    </Button>
-    )}*/}
-  
-
-        <Link to="/edit-profile">
+        {currentUser?._id === user._id && (
+        <Link as={RouterLink} to="/update">
           <Button mt={5} borderColor="black" bg="purple.200">Edit Profile</Button>
         </Link>
+      )}
 
-      
+      {currentUser?._id !== user._id && (
+        <Button mt={5} borderColor="black" bg="purple.200" onClick={handleFollowUnfollow} isLoading={updating}>
+          {following ? "Unfollow" : "Follow"}
+        </Button>
+      )}
 
-        
+     
       </Box>
 
       <Box ml={4}>
-        <Box borderColor="black" height="200px" bg="green.200" borderWidth="1px" overflow="hidden" p={5}>
-          <Text>{noteText}</Text>
+        <Box borderColor="black"
+        minHeight="200px"
+        maxHeight="200px"
+        width="200px"
+        bg="green.200"
+        borderWidth="1px" 
+        overflow="auto"
+        p={5}>
+          <Text>{user.bio}</Text>
         </Box>
       </Box>
     </Flex>
