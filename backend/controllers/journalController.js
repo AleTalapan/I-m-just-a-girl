@@ -27,12 +27,20 @@ const createJournalEntry = async (req, res) => {
             return res.status(401).json({ error: "Unauthorized to create journal entry" });
         }
 
-        const newJournalEntry = new JournalEntry({ createdBy, month, day, entry });
+        const existingEntry = await JournalEntry.findOne({ createdBy: createdBy, month, day });
 
+        if (existingEntry) {
+            // updating the existing entry
+            existingEntry.entry = entry;
+            await existingEntry.save();
+            res.status(200).json(existingEntry);
+        } else {
+            // new entry
+            const newJournalEntry = new JournalEntry({ createdBy: createdBy, month, day, entry });
+            await newJournalEntry.save();
+            res.status(201).json(newJournalEntry);
+        }
 
-        await newJournalEntry.save();
-
-        res.status(201).json(newJournalEntry);
     } catch (err) {
         res.status(500).json({ error: err.message });
         console.log(err);
