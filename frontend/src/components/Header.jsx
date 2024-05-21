@@ -10,6 +10,7 @@ const Header = () => {
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
   const location = useLocation();
   const currentUser = useRecoilValue(userLoggedin);
+
   console.log("Current User:", currentUser);
   useEffect(() => {
     setIsFriendsListOpen(false); // Închide lista de prieteni când ruta paginii se schimbă
@@ -18,6 +19,15 @@ const Header = () => {
   const toggleFriendsList = () => {
     setIsFriendsListOpen(!isFriendsListOpen);
   };
+
+  //current Date
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1; // getMonth is zero-indexed
+  const currentDay = currentDate.getDate();
+
+  const journalRoute = `${currentUser?.username}/${currentMonth}/${currentDay}`;
+
 
   return (
     <HStack mb={"30px"} justifyContent="space-between">
@@ -59,7 +69,7 @@ const Header = () => {
         border="1px"
         borderRadius="md" p={2} bg="purple.200"
       >
-        <Link as={RouterLink} to="/journal/">
+        <Link as={RouterLink} to={journalRoute}>
           Journal
         </Link>
       </Box>
