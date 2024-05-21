@@ -68,6 +68,19 @@ const UserHeader = ({user}) => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/users/delete/${user._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      showToast("Success", data.message, "success");
+      console.log(user);
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    }
+  };
+
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>
@@ -108,8 +121,16 @@ const UserHeader = ({user}) => {
         </Button>
       )}
 
+<Box>
+      {currentUser.isAdmin && currentUser?._id !== user._id && (
+        <Button mt={5} borderColor="black" bg="red" colorScheme="red" onClick={handleDeleteUser} >
+          Delete User
+        </Button>
+      )}
+      </Box>
      
       </Box>
+      
 
       <Box ml={4}>
         <Box borderColor="black"

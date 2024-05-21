@@ -16,6 +16,7 @@ import {
   useColorModeValue,
   Link,
   useToast,
+  Checkbox
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
@@ -32,6 +33,7 @@ export default function SignupCard() {
     username: "",
     email: "",
     password: "",
+    isAdmin:false,
 });
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userLoggedin);
@@ -128,6 +130,17 @@ export default function SignupCard() {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
+
+            <FormLabel>
+              <Checkbox
+                isChecked={inputs.isAdmin}
+                onChange={(e) =>
+                  setInputs({ ...inputs, isAdmin: e.target.checked })
+                }
+              />Register as ADMIN
+              </FormLabel>
+
+
             <Stack spacing={10} pt={2}>
               <Button
                 loadingText="Submitting"
