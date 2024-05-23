@@ -33,9 +33,18 @@ const LogoutButton = () => {
   };
 
   return (
-    <Link onClick={handleLogout}>
+
+    <Link  
+    p={2} 
+    bg="purple.200" 
+    borderColor="black"
+    borderRadius="md" 
+    borderWidth="1px" 
+    _hover={{ bg: '#6f00ff' }} 
+    onClick={handleLogout}>
       Log Out
     </Link>
+
   );
 };
 
