@@ -73,9 +73,20 @@ const getJournalEntry = async (req, res) => {
 const deleteJournalEntry = async (req, res) => {
     try {
         const { createdBy, month, day } = req.params;
-        const journalEntry = await JournalEntry.findOne({ createdBy, month, day });
+
+        const journalEntry = await JournalEntry.findOne({
+            createdBy: createdBy,  
+            month: month,
+            day: day
+        });
+
         if (!journalEntry) {
             return res.status(404).json({ error: "Journal entry not found" });
+        }
+
+        const user = await User.findOne({ username: createdBy });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
 
         if (journalEntry.createdBy.toString() !== req.user.username.toString() && !req.user.isAdmin) {

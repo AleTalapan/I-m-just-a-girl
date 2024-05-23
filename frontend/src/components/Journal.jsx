@@ -3,6 +3,8 @@ import { Box, Text, Button, HStack, Textarea, useToast } from "@chakra-ui/react"
 import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import userLoggedin from '../atoms/userLoggedin';
+import useShowToast from "../hooks/useShowToast";
+
 
 const Journal = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -17,6 +19,8 @@ const Journal = () => {
   const [privacy, setPrivacy] = useState("red");
   const [editableText, setEditableText] = useState("");
   const toast = useToast();
+  const showToast = useShowToast();
+
   const [journalEntry, setJournalEntry] = useState("");
 
 //   console.log(currentUser);
@@ -28,13 +32,13 @@ useEffect(() => {
         const res = await fetch(`/api/journal/${username}/${month}/${day}`);
         const data = await res.json();
         if (data.error) {
-          console.log(data.error);
+          showToast("Error", `Journal entry for ${month} / ${day} doesn't exist`, "error");
           return;
         }
         setJournalEntry(data.entry);
-        setEditableText(data.entry); 
+        setEditableText(data.entry);  
       } catch (error) {
-        console.error("Failed to fetch journal", error);
+        showToast("Error", "Failed to fetch journal", "error");
       }
     };
     fetchJournalEntry();
@@ -62,12 +66,32 @@ useEffect(() => {
       const data = await res.json(); 
       setJournalEntry(data.entry);
       setEditableText(editableText);
-      console.log("Journal entry saved successfully:", data);
+      showToast("Success", "Journal entry saved successfully:", "success");
+      //console.log("Journal entry saved successfully:", data);
       setButtonText("Saved");
       setTimeout(() => setButtonText("Save"), 2000); 
     } catch (error) {
-      console.error("Failed to save changes:", error.message);
+      showToast("Error", "Failed to save changes", "error");
       setButtonText("Save");
+    }
+  };
+
+  const handleDeleteEntry = async (e) => {
+    try {
+      
+      if (!window.confirm("Are you sure you want to delete this entry?")) return;
+
+      const res = await fetch(`/api/journal/${username}/${month}/${day}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+      showToast("Success", "Entry deleted", "success");
+    } catch (error) {
+      showToast("Error", error.message, "error");
     }
   };
 
@@ -120,6 +144,9 @@ useEffect(() => {
         height="90%"
       />
       <Button onClick={handleSaveEntry} mt="2px">{buttonText}</Button>
+
+      <Button onClick={handleDeleteEntry} mt="2px">Delete</Button>
+     
     </>
         ) : (
     <Text textAlign={"left"} marginTop={"50px"}>

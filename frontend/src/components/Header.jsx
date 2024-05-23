@@ -12,17 +12,15 @@ const Header = () => {
   const currentUser = useRecoilValue(userLoggedin);
 
   useEffect(() => {
-    setIsFriendsListOpen(false); // Close friends list when page route changes
+    setIsFriendsListOpen(false); 
   }, [location]);
 
   const toggleFriendsList = () => {
     setIsFriendsListOpen(!isFriendsListOpen);
   };
 
-  // Current Date
   const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1; // getMonth is zero-indexed
+  const currentMonth = currentDate.getMonth() + 1; 
   const currentDay = currentDate.getDate();
   const journalRoute = `${currentUser?.username}/${currentMonth}/${currentDay}`;
 

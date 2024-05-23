@@ -177,7 +177,6 @@ const deleteUser = async (req, res) => {
 
   
 	  await User.findByIdAndDelete(userToDelete._id);
-	  await Post.deleteMany({ postedBy: userToDelete._id });
   
 	  res.status(200).json({ message: "User deleted successfully" });
 	} catch (err) {
