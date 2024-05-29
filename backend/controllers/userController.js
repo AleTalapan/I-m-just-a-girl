@@ -109,6 +109,8 @@ const signupUser = async (req, res) => {
 				email: newUser.email,
 				username:newUser.username,
 				isAdmin:newUser.isAdmin,
+				bio: newUser.bio,
+				profilePic: newUser.profilePic,
 			});
 		} else {
 			res.status(400).json({ error: "Invalid user data" });

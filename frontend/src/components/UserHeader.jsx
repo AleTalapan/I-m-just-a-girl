@@ -87,7 +87,7 @@ const UserHeader = ({user}) => {
       <Box p="10">
         <Avatar
           name="John Doe"
-          src="./assets/miau.png"
+          src={user.profilePic}
           size={{
             md: "xl",
           }}

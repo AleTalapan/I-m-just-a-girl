@@ -8,19 +8,22 @@ import HomePage from './pages/HomePage';
 import { useRecoilValue } from 'recoil';
 import userLoggedin from './atoms/userLoggedin';
 import Journal from './components/Journal';
+import UpdateProfilePage from './pages/UpdateProfilePage';
 
 
 function App() {
   const currentUser=useRecoilValue(userLoggedin);
   console.log(currentUser)
+  const showHeader = currentUser && location.pathname !== '/update';
   
   return (
     <Container maxW='620px'>
-    {currentUser && <Header />}
+    {showHeader && <Header />}
     <Routes>
     <Route path="/" element={currentUser ? <HomePage /> : <Navigate to="/auth" />}/>
     <Route path="/auth" element={!currentUser ? <AuthPage /> : <Navigate to="/" />}/>
-     <Route path="/:username" element={<ProfilePage />} />
+    <Route path="/update" element={currentUser ? <UpdateProfilePage /> : <Navigate to="/" />}/>
+    <Route path="/:username" element={<ProfilePage />} />
     <Route path="/:username/:month/:day" element={<Journal />} /> 
   
 
