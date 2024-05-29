@@ -101,4 +101,34 @@ const deleteJournalEntry = async (req, res) => {
     }
 };
 
-export { createJournalEntry,getJournalEntry,deleteJournalEntry};
+const getJournalFeed = async (req, res) => {
+    try {
+        const userId = req.user._id; // Assume req.user is populated from your auth middleware
+        const user = await User.findById(userId);
+        const followingIds = user.following; // assuming user.following is an array of ObjectId
+        const followingUsers = await Promise.all(followingIds.map(id => User.findById(id)));
+        const usernames = followingUsers.filter(user => user !== null).map(user => user.username);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Ensure the user has people they are following
+        if (!user.following || user.following.length === 0) {
+            return res.status(400).json({ error: "No following list to retrieve entries from" });
+        }
+        const entries = await JournalEntry.find({
+            createdBy: { $in: usernames } // Look for entries created by users the current user is following
+        }).populate('createdBy', 'username name'); // Optionally populate to get details of the users who created the entries
+
+        if (!entries || entries.length == 0) {
+            return res.status(404).json({ message: "No entries"});
+        }
+
+        res.status(200).json(entries);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.log(err);
+    }
+};
+
+export { createJournalEntry,getJournalEntry,deleteJournalEntry, getJournalFeed};

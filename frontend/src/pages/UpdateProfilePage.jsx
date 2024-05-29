@@ -47,7 +47,6 @@ export default function UpdateProfilePage() {
               },
               body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
             });
-        
             const data = await res.json(); // updated user object
             console.log(data);
         
