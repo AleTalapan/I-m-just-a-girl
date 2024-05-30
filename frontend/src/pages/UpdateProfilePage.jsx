@@ -36,6 +36,7 @@ export default function UpdateProfilePage() {
     };
     const showToast = useShowToast();
     const {handleImageChange, imgUrl} = usePreviewImg();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
@@ -57,7 +58,8 @@ export default function UpdateProfilePage() {
             }
             showToast("Success", "Profile updated successfully", "success");
             setUser(data);
-            localStorage.setItem("user-threads", JSON.stringify(data));
+            localStorage.setItem("journal", JSON.stringify(data));
+            navigate(`/${user.username}`);
         
         } catch(error){
             showToast('Error', error, 'error');
@@ -79,7 +81,7 @@ export default function UpdateProfilePage() {
         p={6}
         >
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
-          User Profile Edit
+          Update profile
         </Heading>
         <FormControl id="userName">
           <Stack direction={['column', 'row']} spacing={6}>

@@ -86,24 +86,25 @@ const UserHeader = ({user}) => {
     <Flex justifyContent={"space-between"} alignItems={"center"} w={"full"}>
       <Box p="10">
         <Avatar
-          name="John Doe"
           src={user.profilePic}
           size={{
             md: "xl",
           }}
         />
+        
+        {user.isAdmin && (
+        <RiAdminFill alignItems="left" color="purple" />
+      )} 
       </Box>
 
       <Box>
-        <HStack>
-        <Text fontSize={"2xl"} fontWeight={"bold"}>
-        {user.name}
+        
+        <VStack alignItems={"center"} > 
+        <Text  fontSize={"2xl"} fontWeight={"bold"}>
+        {user.name} 
+        
         </Text>
-
-         {user.isAdmin && (
-        <RiAdminFill color="purple" />
-      )} 
-        </HStack>
+        </VStack>
 
       <VStack alignItems={"center"}>
         <Text fontSize={"sm"}>{user.username}</Text>
