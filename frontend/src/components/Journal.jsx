@@ -32,13 +32,13 @@ useEffect(() => {
         const res = await fetch(`/api/journal/${username}/${month}/${day}`);
         const data = await res.json();
         if (data.error) {
-          showToast("Error", `Journal entry for ${month} / ${day} doesn't exist`, "error");
+          showToast("Psst", `Journal entry for ${month} / ${day} doesn't exist yet`, "error");
           return;
         }
         setJournalEntry(data.entry);
         setEditableText(data.entry);  
       } catch (error) {
-        showToast("Error", "Failed to fetch journal", "error");
+        showToast("Psst", "Failed to fetch journal", "error");
       }
     };
     fetchJournalEntry();
@@ -156,7 +156,7 @@ useEffect(() => {
     }
 
         <Text position='absolute' top='10px' right='20px' color='black'>
-          {getCurrentDate()}
+          {day}-{month}-2024
         </Text>
 
         <Text position='absolute' top='30px' left='20px' color='black'>
