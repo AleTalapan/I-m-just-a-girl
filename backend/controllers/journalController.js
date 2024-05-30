@@ -121,7 +121,8 @@ const getJournalFeed = async (req, res) => {
         }).populate('createdBy', 'username name'); // Optionally populate to get details of the users who created the entries
 
         if (!entries || entries.length == 0) {
-            return res.status(404).json({ message: "No entries"});
+            console.log("No entries");
+            //return res.status(404).json({ message: "No entries"});
         }
 
         res.status(200).json(entries);
