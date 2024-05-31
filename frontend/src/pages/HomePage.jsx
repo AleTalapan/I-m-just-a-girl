@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
-import { Flex, Spinner, Box, Text, VStack, Input, Button } from "@chakra-ui/react";
+import { Flex, Spinner, Box, Text, VStack, Input, Button, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const HomePage = () => {
@@ -56,7 +56,7 @@ const HomePage = () => {
         onChange={(e) => setUsername(e.target.value)}
         size="md"
         mr={2} // Right margin to separate from button
-        w={400} // Width set to 300px
+        w={460} // Width set to 300px
     />
     <Button onClick={goToUserProfile}
         bg="purple.200"
@@ -80,8 +80,11 @@ const HomePage = () => {
                             <VStack spacing={4} w="full">
                                 {posts.map(post => (
                                     <Box key={post._id} p={5} shadow="md" borderWidth="2px" borderRadius="lg" bg="#bf8358" w="full">
+                                        <Text fontSize="sm" fontFamily={'cursive'} textAlign={"left"}>{`By: ${post.createdBy} on ${new Date(post.createdAt).toLocaleDateString()}`}</Text>
+                                        <Divider borderColor="gray.400" my={2}/> {/* Adding a divider for clear separation */}
                                         <Text fontSize="lg" fontFamily={'cursive'} >{post.entry}</Text>
-                                        <Text fontSize="sm" fontFamily={'cursive'} >{`By: ${post.createdBy} on ${new Date(post.createdAt).toLocaleDateString()}`}</Text>
+                                        
+                                        
                                     </Box>
                                 ))}
                             </VStack>
